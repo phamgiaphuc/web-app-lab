@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>3-Column Flexbox Layout</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        background-color: #f0f0f0;
+      }
+      h2 {
+        padding: 1em;
+        text-align: center;
+      }
+      header,
+      footer {
+        background-color: lightsalmon;
+      }
+      .container {
+        background-color: lightblue;
+        display: flex;
+        height: 25rem;
+      }
+      .main {
+        flex: 2;
+        background-color: white;
+        padding: 1em;
+      }
+      .sidebar {
+        flex: 1;
+        background-color: lightgray;
+        padding: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h2>Header</h2>
+    </header>
+    <div class="container">
+      <aside class="sidebar">
+        <h2>Sidebar 1</h2>
+        <p>This is the first sidebar content.</p>
+      </aside>
+      <main class="main">
+        <h2>Main Content</h2>
+        <p>This is the main content section. It takes up more space compared to the sidebars.</p>
+      </main>
+      <aside class="sidebar">
+        <h2>Sidebar 2</h2>
+        <p>This is the second sidebar content.</p>
+      </aside>
+    </div>
+    <footer>
+      <h2>Footer</h2>
+    </footer>
+  </body>
+</html>
