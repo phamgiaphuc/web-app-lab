@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LocalStorage Example</title>
+    <style>
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+      }
+
+      input,
+      button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 16px;
+      }
+
+      .saved-items {
+        margin-top: 20px;
+      }
+
+      .item {
+        padding: 10px;
+        background: #f0f0f0;
+        margin: 5px 0;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Shopping List (Persistent)</h1>
+
+      <input type="text" id="itemInput" placeholder="Add item..." />
+      <button onclick="addItem()">Add</button>
+      <button onclick="clearAll()">Clear All</button>
+
+      <div class="saved-items" id="itemsList"></div>
+    </div>
+
+    <script>
+      const STORAGE_KEY = "shopping_list";
+
+      // Load items from localStorage
+      function loadItems() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+      }
+
+      // Save items to localStorage
+      function saveItems(items) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      }
+
+      // Add new item
+      function addItem() {
+        const input = document.getElementById("itemInput");
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        const items = loadItems();
+        items.push({
+          id: Date.now(),
+          text: text,
+          addedAt: new Date().toISOString(),
+        });
+
+        saveItems(items);
+        input.value = "";
+        renderItems();
+      }
+
+      // Delete item
+      function deleteItem(id) {
+        const items = loadItems();
+        const filtered = items.filter((item) => item.id !== id);
+        saveItems(filtered);
+        renderItems();
+      }
+
+      // Clear all items
+      function clearAll() {
+        if (confirm("Delete all items?")) {
+          localStorage.removeItem(STORAGE_KEY);
+          renderItems();
+        }
+      }
+
+      // Render items to page
+      function renderItems() {
+        const items = loadItems();
+        const container = document.getElementById("itemsList");
+
+        if (items.length === 0) {
+          container.innerHTML = '<p style="color: #999;">No items yet</p>';
+          return;
+        }
+
+        container.innerHTML = items
+          .map(
+            (item) => `
+                <div class="item">
+                    <span>${item.text}</span>
+                    <button onclick="deleteItem(${item.id})">Delete</button>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      // Initialize on page load
+      window.onload = renderItems;
+    </script>
+  </body>
+</html>
